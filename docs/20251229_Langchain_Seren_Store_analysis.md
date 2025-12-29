@@ -302,7 +302,40 @@ Total cost = Publisher fee (fixed) + LLM costs (metered) + Compute (time-based)
 
 ---
 
-## 9. Open Questions
+## 9. Why "Wrong Mental Model" Doesn't Apply
+
+GPT Store failed partly because humans didn't need specialized GPTs - ChatGPT was "good enough" for 80% of tasks. Why wouldn't users just use Claude instead of Seren Store agents?
+
+**The key difference: Seren Store is agent-to-agent, not human-to-agent.**
+
+| GPT Store | Seren Store |
+|-----------|-------------|
+| **Humans** browse for specialized GPTs | **Agents** invoke specialized agents |
+| Human thinks: "ChatGPT is good enough" | Agent thinks: "I need to delegate this task" |
+| Browsing/installing feels like friction | API call feels like a tool |
+
+### Why Agents Need to Call Agents
+
+1. **Delegation** - An agent running a complex workflow can't do everything itself. It needs to call specialized sub-agents for specific tasks.
+
+2. **Capabilities it doesn't have** - A Claude agent might need to execute code (→ Daytona), scrape web (→ Firecrawl), search deeply (→ Exa). These are already x402 calls.
+
+3. **Deterministic workflows** - A tested, stateful LangGraph agent is more reliable than ad-hoc prompting for complex multi-step tasks.
+
+4. **Cost efficiency** - Specialized agent with cheaper model + good prompts might outperform throwing GPT-4 at everything.
+
+5. **The agent IS the LLM** - It can't "just use Claude" because it IS Claude. It needs external capabilities.
+
+### The Mental Model is Different
+
+- **Human**: "Do I need an app for this, or is the default good enough?"
+- **Agent**: "I need to call a tool/service to accomplish this sub-task"
+
+Agents are already accustomed to calling tools. Seren Store agents are just more sophisticated tools.
+
+---
+
+## 10. Open Questions
 
 1. **Curation vs open**: Start curated (Seren approves templates) or open marketplace?
 2. **Revenue split**: What percentage does Seren take vs publisher?
