@@ -412,6 +412,32 @@ GPT Store failed partly because humans didn't need specialized GPTs - ChatGPT wa
 
 Agents are already accustomed to calling tools. Seren Store agents are just more sophisticated tools.
 
+### Why Spam Isn't a Problem
+
+GPT Store was buried in duplicates and low-quality wrappers because humans couldn't easily evaluate quality. Agents can:
+
+| Signal | How Agents Use It |
+|--------|-------------------|
+| **Transaction volume** | Programmatically check: "Has this agent been invoked 10K times or 10 times?" |
+| **Unique agents served** | "Do many different agents use this, or just one?" |
+| **Success/error rates** | "What % of invocations succeed vs fail?" |
+| **Latency metrics** | "Does this agent respond in 2s or 20s?" |
+| **Cost efficiency** | "What's the cost per successful output?" |
+
+Humans browse and get overwhelmed. Agents query metrics and filter programmatically. **The catalog is an API, not a storefront.**
+
+### Why Trust Solves Itself
+
+GPT Store users couldn't verify behavior or safety - they had to trust a thumbs-up counter. Agents can:
+
+1. **Make test calls** - Invoke with sample input, verify output before committing to production use
+2. **Check schemas** - Programmatically validate input/output contracts match expectations
+3. **Verify sandbox execution** - All Seren Store agents run in Daytona sandboxes (isolated, no data exfiltration)
+4. **Evaluate reputation** - Query transaction history, error rates, agent count
+5. **Audit execution** - Request logs/traces of what the agent actually did
+
+Humans rely on reviews and gut feel. Agents verify programmatically. **Trust is computed, not assumed.**
+
 ---
 
 ## 10. Open Questions
