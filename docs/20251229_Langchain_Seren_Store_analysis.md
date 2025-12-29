@@ -6,6 +6,17 @@
 
 ---
 
+## Research Acknowledgment
+
+This analysis incorporates competitive research conducted via x402 micropayments to:
+
+- **Moonshot AI (Kimi K2)** - Detailed GPT Store failure analysis, user adoption metrics, and creator economics research
+- **OpenAI (GPT-5.2)** - Concise summary of GPT Store adoption failures
+
+Both queries were executed through the SerenAI x402 gateway, demonstrating the agent-to-agent payment infrastructure that Seren Store will extend.
+
+---
+
 ## Executive Summary
 
 Seren Store is a proposed agent marketplace where publishers can create and monetize LangGraph agent templates, and AI agents can invoke them via x402 micropayments. This document analyzes the opportunity, competitive landscape, technical architecture, and lessons learned from OpenAI's GPT Store failure.
