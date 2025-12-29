@@ -308,7 +308,8 @@ Total cost = Publisher fee (fixed) + LLM costs (metered) + Compute (time-based)
 2. **Revenue split**: What percentage does Seren take vs publisher?
 3. **Quality control**: How to prevent spam/low-quality agents?
 4. **Versioning**: How to handle template updates without breaking consumers?
-5. **Rate limits**: How to protect against abuse while enabling legitimate use?
+
+*Note: Rate limits are a non-issue. Pay-per-execution IS the rate limit. If they're paying, it's not abuse.*
 
 ---
 
