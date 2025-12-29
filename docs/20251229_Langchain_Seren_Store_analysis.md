@@ -440,18 +440,50 @@ Humans rely on reviews and gut feel. Agents verify programmatically. **Trust is 
 
 ---
 
-## 10. Open Questions
+## 10. Two-Tiered Publisher System
 
-1. **Curation vs open**: Start curated (Seren approves templates) or open marketplace?
-2. **Revenue split**: What percentage does Seren take vs publisher?
-3. **Quality control**: How to prevent spam/low-quality agents?
-4. **Versioning**: How to handle template updates without breaking consumers?
+Rather than choosing between curated OR open, use both - like Twitter's original verified badges before they became paid.
+
+### Tier 1: Seren Verified
+
+| Aspect | Details |
+|--------|---------|
+| **Vetting** | Seren reviews publisher, data quality, agent behavior |
+| **Badge** | Verified checkmark in catalog |
+| **Trust** | Guaranteed high quality, users can trust without evaluation |
+| **Cost** | Could charge publishers for verification (or free for strategic partners) |
+
+### Tier 2: Open Marketplace
+
+| Aspect | Details |
+|--------|---------|
+| **Access** | Anyone can publish |
+| **Quality** | Agents evaluate via metrics (transactions, success rate, etc.) |
+| **Trust** | Computed, not guaranteed |
+| **Cost** | Just standard platform fees |
+
+### Why This Works
+
+- **Bootstraps trust**: New users see verified agents, immediately trust the platform
+- **Permissionless growth**: Don't gate-keep innovation, let anyone publish
+- **Quality signal**: Verified badge is a strong signal without blocking the long tail
+- **Revenue option**: Verification as a premium service (or keep it free for strategic value)
+
+*Suggested by Erik*
+
+---
+
+## 11. Open Questions
+
+1. **Revenue split**: What percentage does Seren take vs publisher?
+2. **Versioning**: How to handle template updates without breaking consumers?
+3. **Verification pricing**: Charge for Seren Verified status, or keep it free/invite-only?
 
 *Note: Rate limits are a non-issue. Pay-per-execution IS the rate limit. If they're paying, it's not abuse.*
 
 ---
 
-## 10. Next Steps
+## 12. Next Steps
 
 1. **MVP Build** (~1-2 days)
    - Template storage and upload API
