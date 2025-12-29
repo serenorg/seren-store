@@ -1,4 +1,4 @@
-# Seren Store: LangGraph Agent Marketplace Analysis
+# Seren Store: Agent Marketplace Analysis
 
 **Date:** December 29, 2025
 **Author:** Taariq Lewis & Claude
@@ -19,7 +19,9 @@ Both queries were executed through the SerenAI x402 gateway, demonstrating the a
 
 ## Executive Summary
 
-Seren Store is a proposed agent marketplace where publishers can create and monetize LangGraph agent templates, and AI agents can invoke them via x402 micropayments. This document analyzes the opportunity, competitive landscape, technical architecture, and lessons learned from OpenAI's GPT Store failure.
+Seren Store is a proposed **framework-agnostic** agent marketplace where publishers can create and monetize agent templates using any code or framework, and AI agents can invoke them via x402 micropayments. This document analyzes the opportunity, competitive landscape, technical architecture, and lessons learned from OpenAI's GPT Store failure.
+
+**Key principle: Bring Your Own Code.** LangGraph, CrewAI, raw Python, or any framework - no lock-in required.
 
 ---
 
@@ -48,14 +50,22 @@ This is "Agents invoking Agents" - an agent marketplace for AI-to-AI commerce.
 
 ## 2. Product Design
 
-### Template Formats
+### Template Formats (Bring Your Own Code)
 
-| Format | Use Case | Validation |
-|--------|----------|------------|
-| **Raw Python** | Full control, complex logic | Runs in Daytona sandbox |
-| **LangGraph JSON** | Declarative, simpler, portable | Schema validation |
+The system is **framework-agnostic**. Publishers can use any approach:
 
-Both formats accepted. Detection on upload, stored with format flag.
+| Format | Complexity | Use Case |
+|--------|------------|----------|
+| **Python function** | Lowest | Simple transformations, API calls |
+| **Python class** | Low | Stateful agents, complex logic |
+| **LangGraph** | Medium | Graph-based workflows (optional) |
+| **CrewAI** | Medium | Multi-agent teams (optional) |
+| **AutoGen** | Medium | Microsoft's agent framework (optional) |
+| **Any framework** | Varies | Whatever the creator prefers |
+
+**The only requirement:** Code must implement a simple interface (`run(input) → output`) and execute in Daytona sandbox.
+
+**Partnership opportunity:** LangChain could be a featured partner with first-class SDK support, but no exclusivity or lock-in.
 
 ### LLM Key Hierarchy
 
@@ -97,51 +107,71 @@ Making it easy for creators to build and publish templates is critical. GPT Stor
 
 | Feature | What It Does |
 |---------|--------------|
-| **Scaffold** | Generate boilerplate for Python or LangGraph JSON templates |
+| **Scaffold** | Generate boilerplate (function, class, or framework templates) |
 | **Local dev server** | Hot reload, test with sample inputs, see outputs |
 | **Sandbox testing** | Run in real Daytona environment before publishing |
 | **Validation** | Check input schema, pricing, dependencies before publish |
 | **Analytics** | View invocation counts, revenue, errors, latency |
 
-### Template Structure (Python)
+### Template Examples (Bring Your Own Code)
+
+**Option 1: Simple Function (easiest)**
 
 ```python
 # my_agent/agent.py
-from seren_store import Agent, Input, Output
+from seren_store import agent
+
+@agent(
+    name="Web Researcher",
+    price=0.05,
+    input_schema={"query": "string"}
+)
+def web_researcher(input: dict) -> dict:
+    # Use any libraries, APIs, or LLMs you want
+    results = search_web(input["query"])
+    summary = call_llm(f"Summarize: {results}")
+    return {"summary": summary, "sources": results}
+```
+
+**Option 2: Python Class (more control)**
+
+```python
+# my_agent/agent.py
+from seren_store import Agent
 
 class WebResearcher(Agent):
     """Deep web search and synthesis agent."""
 
-    def run(self, input: Input) -> Output:
-        # Use injected tools: self.search, self.browse, self.llm
-        results = self.search(input.query)
+    def run(self, input: dict) -> dict:
+        results = self.search(input["query"])
         synthesis = self.llm.synthesize(results)
-        return Output(summary=synthesis, sources=results)
-
-# my_agent/config.yaml
-name: Web Researcher
-description: Deep web search and synthesis
-pricing:
-  baseFee: 0.05
-  includesLlmCosts: false
-inputSchema:
-  query: string
+        return {"summary": synthesis, "sources": results}
 ```
 
-### Template Structure (LangGraph JSON)
+**Option 3: LangGraph (if you prefer graphs)**
 
-```json
-{
-  "name": "Web Researcher",
-  "nodes": [
-    {"id": "search", "tool": "exa", "input": "$.query"},
-    {"id": "synthesize", "tool": "llm", "input": "$.search.results"}
-  ],
-  "edges": [
-    {"from": "search", "to": "synthesize"}
-  ],
-  "output": "$.synthesize.result"
-}
+```python
+# my_agent/agent.py
+from langgraph.graph import StateGraph
+from seren_store import agent
+
+@agent(name="Web Researcher", price=0.05)
+def web_researcher(input: dict) -> dict:
+    graph = StateGraph(...)  # Define your graph
+    return graph.invoke(input)
+```
+
+**Option 4: Any Framework**
+
+```python
+# Use CrewAI, AutoGen, or anything else
+from crewai import Crew, Agent, Task
+from seren_store import agent
+
+@agent(name="Research Crew", price=0.10)
+def research_crew(input: dict) -> dict:
+    crew = Crew(agents=[...], tasks=[...])
+    return crew.kickoff(input)
 ```
 
 ### Why This Matters
@@ -399,7 +429,7 @@ GPT Store failed partly because humans didn't need specialized GPTs - ChatGPT wa
 
 2. **Capabilities it doesn't have** - A Claude agent might need to execute code (→ Daytona), scrape web (→ Firecrawl), search deeply (→ Exa). These are already x402 calls.
 
-3. **Deterministic workflows** - A tested, stateful LangGraph agent is more reliable than ad-hoc prompting for complex multi-step tasks.
+3. **Deterministic workflows** - A tested, stateful agent is more reliable than ad-hoc prompting for complex multi-step tasks.
 
 4. **Cost efficiency** - Specialized agent with cheaper model + good prompts might outperform throwing GPT-4 at everything.
 
@@ -507,17 +537,29 @@ Rather than choosing between curated OR open, use both - like Twitter's original
 
 ---
 
-## Appendix: LangGraph Overview
+## Appendix: Supported Frameworks
 
-LangGraph is a low-level orchestration framework for building, managing, and deploying long-running, stateful agents. Key features:
+Seren Store is framework-agnostic. Here are some popular options creators can use:
 
-- **Durable Execution**: Agents persist through failures and resume from where they stopped
-- **Human-in-the-Loop**: Inspect and modify agent state at any execution point
-- **Comprehensive Memory**: Short-term working memory and long-term persistent memory
-- **Debugging**: Integration with LangSmith for visualization and monitoring
-- **Production-Ready**: Infrastructure for stateful, long-running workflows
+### LangGraph (LangChain)
 
-LangGraph uses a graph-based model where developers define state types, create nodes as functions, connect nodes with edges, and compile for execution.
+Graph-based workflow orchestration with durable execution, human-in-the-loop, and comprehensive memory. Good for complex, stateful agents. *Potential partnership opportunity.*
+
+### CrewAI
+
+Multi-agent teams with role-based agents. Good for collaborative workflows where multiple specialized agents work together.
+
+### AutoGen (Microsoft)
+
+Conversational agents with multi-agent conversations. Good for agents that need to discuss and iterate.
+
+### Raw Python
+
+No framework needed. Just implement `run(input) → output` and use whatever libraries you want. Often the simplest choice.
+
+### Others
+
+Any Python code that runs in a Daytona sandbox works. The SDK provides a thin wrapper - bring your own logic.
 
 ---
 
