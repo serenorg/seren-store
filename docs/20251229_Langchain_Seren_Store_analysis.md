@@ -79,7 +79,86 @@ Resolution order: User key → Publisher key → Seren key
 
 ---
 
-## 3. API Design
+## 3. Creator Experience
+
+Making it easy for creators to build and publish templates is critical. GPT Store failed partly because creators had no tools, no analytics, and no clear path.
+
+### Development Workflow
+
+```
+1. Install SDK:        pip install seren-store
+2. Scaffold template:  seren init my-agent
+3. Develop locally:    seren dev (hot reload, test inputs)
+4. Test in sandbox:    seren test (runs in Daytona)
+5. Publish:            seren publish
+```
+
+### SDK Features
+
+| Feature | What It Does |
+|---------|--------------|
+| **Scaffold** | Generate boilerplate for Python or LangGraph JSON templates |
+| **Local dev server** | Hot reload, test with sample inputs, see outputs |
+| **Sandbox testing** | Run in real Daytona environment before publishing |
+| **Validation** | Check input schema, pricing, dependencies before publish |
+| **Analytics** | View invocation counts, revenue, errors, latency |
+
+### Template Structure (Python)
+
+```python
+# my_agent/agent.py
+from seren_store import Agent, Input, Output
+
+class WebResearcher(Agent):
+    """Deep web search and synthesis agent."""
+
+    def run(self, input: Input) -> Output:
+        # Use injected tools: self.search, self.browse, self.llm
+        results = self.search(input.query)
+        synthesis = self.llm.synthesize(results)
+        return Output(summary=synthesis, sources=results)
+
+# my_agent/config.yaml
+name: Web Researcher
+description: Deep web search and synthesis
+pricing:
+  baseFee: 0.05
+  includesLlmCosts: false
+inputSchema:
+  query: string
+```
+
+### Template Structure (LangGraph JSON)
+
+```json
+{
+  "name": "Web Researcher",
+  "nodes": [
+    {"id": "search", "tool": "exa", "input": "$.query"},
+    {"id": "synthesize", "tool": "llm", "input": "$.search.results"}
+  ],
+  "edges": [
+    {"from": "search", "to": "synthesize"}
+  ],
+  "output": "$.synthesize.result"
+}
+```
+
+### Why This Matters
+
+| GPT Store | Seren Store |
+|-----------|-------------|
+| No SDK, paste prompts into web UI | Full SDK with CLI tooling |
+| No local testing | Local dev server with hot reload |
+| No pre-publish validation | Sandbox testing before publish |
+| No analytics | Real-time invocation/revenue dashboard |
+| No versioning | Version control with rollback |
+
+**If creators can't easily build, test, and iterate, they won't build.**
+
+---
+
+## 4. API Design
 
 ### Publish Template
 
