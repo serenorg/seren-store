@@ -306,6 +306,33 @@ Total cost = Publisher fee (fixed) + LLM costs (metered) + Compute (time-based)
 
 **Total MVP: ~1-2 days**
 
+### Daytona Network Access
+
+Agents often need internet access (call APIs, browse web, fetch data). Daytona sandboxes provide tiered network access:
+
+| Tier | Network Access |
+|------|----------------|
+| **Tier 1 & 2** | Restricted - essential services only |
+| **Tier 3 & 4** | Full internet access |
+
+**Essential Services (All Tiers):**
+- AI APIs (OpenAI, Anthropic, Groq)
+- Package registries (NPM, PyPI, Maven)
+- Git hosting (GitHub, GitLab, Bitbucket)
+- Container registries (Docker Hub, GCR, ECR)
+- Cloud storage (AWS S3)
+
+**Implications for Agent Types:**
+
+| Agent Type | Network Needs | Tier Required |
+|------------|---------------|---------------|
+| **LLM callers** | OpenAI, Claude APIs | Any tier |
+| **Code executors** | Package installs only | Any tier |
+| **Web researchers** | Arbitrary HTTP requests | Tier 3+ |
+| **API integrators** | Third-party APIs | Depends on whitelist |
+
+**Recommendation:** Use Tier 3+ for Seren Store to enable full agent capabilities. Web research, arbitrary API calls, and data fetching all require unrestricted network access.
+
 ---
 
 ## 6. Competitive Analysis
