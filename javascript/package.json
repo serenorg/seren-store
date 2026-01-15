@@ -1,0 +1,60 @@
+{
+  "name": "seren-agent",
+  "version": "0.1.0",
+  "description": "SDK for building Seren agent templates - monetizable AI agents that run on any compute backend",
+  "main": "src/index.js",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./llm": "./src/llm.js",
+    "./tools": "./src/tools.js"
+  },
+  "files": ["src", "README.md"],
+  "scripts": {
+    "lint": "eslint src/",
+    "test": "node --test"
+  },
+  "keywords": [
+    "seren",
+    "agent",
+    "ai",
+    "llm",
+    "template",
+    "serverless",
+    "monetization",
+    "x402"
+  ],
+  "author": "Seren",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/serendb/seren-agents.git",
+    "directory": "javascript"
+  },
+  "homepage": "https://seren.ai/docs/agents",
+  "bugs": {
+    "url": "https://github.com/serendb/seren-agents/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "peerDependencies": {
+    "openai": ">=4.0.0",
+    "@anthropic-ai/sdk": ">=0.20.0",
+    "@google/generative-ai": ">=0.5.0"
+  },
+  "peerDependenciesMeta": {
+    "openai": {
+      "optional": true
+    },
+    "@anthropic-ai/sdk": {
+      "optional": true
+    },
+    "@google/generative-ai": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  }
+}
