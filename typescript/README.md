@@ -19,26 +19,29 @@ import { agent } from "seren-agent";
 import { getOpenAIClient } from "seren-agent/llm";
 
 // Define your agent with pricing
-export const run = agent({
-  name: "Web Researcher",
-  description: "Research topics and provide comprehensive summaries",
-  price: "0.05", // $0.05 per invocation
-})(async (input: { query: string }) => {
-  const openai = getOpenAIClient();
+export const run = agent(
+  {
+    name: "Web Researcher",
+    description: "Research topics and provide comprehensive summaries",
+    price: "0.05", // $0.05 per invocation
+  },
+  async (input: { query: string }) => {
+    const openai = getOpenAIClient();
 
-  const response = await openai.chat.completions.create({
-    model: "gpt-4",
-    messages: [
-      { role: "system", content: "You are a research assistant." },
-      { role: "user", content: `Research: ${input.query}` },
-    ],
-  });
+    const response = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        { role: "system", content: "You are a research assistant." },
+        { role: "user", content: `Research: ${input.query}` },
+      ],
+    });
 
-  return {
-    summary: response.choices[0]?.message?.content ?? "",
-    model: "gpt-4",
-  };
-});
+    return {
+      summary: response.choices[0]?.message?.content ?? "",
+      model: "gpt-4",
+    };
+  },
+);
 ```
 
 ## Agent Contract
@@ -58,13 +61,16 @@ const config: AgentConfig = {
   name: "My Agent",           // Display name in store
   description: "...",         // What the agent does
   price: "0.01",              // Price per invocation in USD
-  compute_backend: "modal",   // Optional: prefer specific backend
+  computeBackend: "modal",    // Optional: prefer specific backend
 };
 
-export const run = agent(config)(async (input) => {
-  // Your logic here
-  return { result: "..." };
-});
+export const run = agent(
+  config,
+  async (input) => {
+    // Your logic here
+    return { result: "..." };
+  },
+);
 ```
 
 ## LLM Clients
@@ -155,13 +161,17 @@ Agents are **backend-agnostic** - the same code runs on any supported backend:
 Specify a preference (optional):
 
 ```typescript
-export const run = agent({
-  name: "ML Agent",
-  price: "0.10",
-  compute_backend: "modal", // Prefer Modal for GPU access
-})(async (input) => {
-  // This will run on Modal if available
-});
+export const run = agent(
+  {
+    name: "ML Agent",
+    price: "0.10",
+    computeBackend: "modal", // Prefer Modal for GPU access
+  },
+  async (input) => {
+    // This will run on Modal if available
+    return { ok: true };
+  },
+);
 ```
 
 ## Publishing
@@ -199,16 +209,19 @@ interface ResearchOutput extends AgentOutput {
   sources: string[];
 }
 
-export const run = agent({
-  name: "Researcher",
-  price: "0.05",
-})<ResearchInput, ResearchOutput>(async (input) => {
-  // input is typed as ResearchInput
-  return {
-    summary: "...",
-    sources: ["https://..."],
-  };
-});
+export const run = agent<ResearchInput, ResearchOutput>(
+  {
+    name: "Researcher",
+    price: "0.05",
+  },
+  async (input) => {
+    // input is typed as ResearchInput
+    return {
+      summary: "...",
+      sources: ["https://..."],
+    };
+  },
+);
 ```
 
 ## Error Handling
@@ -218,24 +231,27 @@ Return errors in a structured format:
 ```typescript
 import type { ErrorOutput } from "seren-agent";
 
-export const run = agent({...})(async (input) => {
-  if (!input.query) {
-    return {
-      error: "validation_error",
-      message: "Query is required",
-    } satisfies ErrorOutput;
-  }
+export const run = agent(
+  { name: "My Agent", price: "0.01" },
+  async (input: { query?: string }) => {
+    if (!input.query) {
+      return {
+        error: "validation_error",
+        message: "Query is required",
+      } satisfies ErrorOutput;
+    }
 
-  try {
-    // Your logic
-    return { result: "..." };
-  } catch (e) {
-    return {
-      error: "execution_error",
-      message: e instanceof Error ? e.message : "Unknown error",
-    } satisfies ErrorOutput;
-  }
-});
+    try {
+      // Your logic
+      return { result: "..." };
+    } catch (e) {
+      return {
+        error: "execution_error",
+        message: e instanceof Error ? e.message : "Unknown error",
+      } satisfies ErrorOutput;
+    }
+  },
+);
 ```
 
 ## Local Development
