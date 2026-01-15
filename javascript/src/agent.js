@@ -17,8 +17,9 @@ const SEREN_AGENT_SYMBOL = Symbol.for("seren.agent");
  * @param {string} config.name - Display name for the agent in the store
  * @param {string} [config.description] - Description of what the agent does
  * @param {string} config.price - Price per invocation in USD (e.g., "0.05")
- * @param {string} [config.compute_backend] - Preferred compute backend (e.g., "daytona", "modal")
- * @returns {function} Decorator function that wraps the agent
+ * @param {string} [config.computeBackend] - Preferred compute backend (e.g., "daytona", "modal")
+ * @param {function} fn - The agent function implementing your logic
+ * @returns {function} Wrapped agent function with metadata
  *
  * @example
  * ```javascript
@@ -28,15 +29,15 @@ const SEREN_AGENT_SYMBOL = Symbol.for("seren.agent");
  *   name: "Web Researcher",
  *   description: "Research topics via web search",
  *   price: "0.05"
- * })(async (input) => {
+ * }, async (input) => {
  *   const { query } = input;
  *   // Your agent logic here
  *   return { summary: "...", sources: [...] };
  * });
  * ```
  */
-export function agent(config) {
-    const { name, description = "", price, compute_backend } = config;
+export function agent(config, fn) {
+    const { name, description = "", price, computeBackend } = config;
 
     if (!name) {
         throw new Error("Agent name is required");
@@ -44,26 +45,27 @@ export function agent(config) {
     if (!price) {
         throw new Error("Agent price is required");
     }
+    if (typeof fn !== "function") {
+        throw new Error("Agent function is required as second argument");
+    }
 
-    return function decorator(fn) {
-        // Create wrapper that preserves the original function
-        async function wrappedAgent(input) {
-            return fn(input);
-        }
+    // Create wrapper that preserves the original function
+    async function wrappedAgent(input) {
+        return fn(input);
+    }
 
-        // Attach metadata
-        const metadata = {
-            name,
-            description,
-            price,
-            compute_backend,
-        };
-
-        wrappedAgent._seren_agent = metadata;
-        wrappedAgent[SEREN_AGENT_SYMBOL] = metadata;
-
-        return wrappedAgent;
+    // Attach metadata
+    const metadata = {
+        name,
+        description,
+        price,
+        computeBackend,
     };
+
+    wrappedAgent._seren_agent = metadata;
+    wrappedAgent[SEREN_AGENT_SYMBOL] = metadata;
+
+    return wrappedAgent;
 }
 
 /**

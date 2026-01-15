@@ -151,8 +151,9 @@ Be precise and include confidence scores (0-1) for each extraction.`;
   },
 );
 
-// Local testing
-if (require.main === module) {
+// Local testing (run with: npx ts-node agent.ts)
+const isMainModule = typeof require !== "undefined" && require.main === module;
+if (isMainModule) {
   const sampleDocument = `
 INVOICE #INV-2024-001
 

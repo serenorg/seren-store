@@ -29,6 +29,9 @@ def agent(
     Returns:
         Decorated function with _seren_agent metadata
 
+    Raises:
+        ValueError: If name is empty or price is invalid
+
     Example:
         @agent(name="Code Analyzer", price="0.10", description="Analyzes code quality")
         def run(input: dict) -> dict:
@@ -36,6 +39,22 @@ def agent(
             # ... analysis logic ...
             return {"score": 85, "issues": [...]}
     """
+    # Validate required parameters
+    if not name or not name.strip():
+        raise ValueError("Agent name is required and cannot be empty")
+
+    if not price or not price.strip():
+        raise ValueError("Agent price is required and cannot be empty")
+
+    # Validate price format (should be a valid decimal string)
+    try:
+        price_float = float(price)
+        if price_float < 0:
+            raise ValueError("Agent price cannot be negative")
+    except ValueError as e:
+        if "could not convert" in str(e).lower():
+            raise ValueError(f"Agent price must be a valid number, got: {price}")
+        raise
 
     def decorator(func: Callable) -> Callable:
         @wraps(func)
@@ -44,7 +63,7 @@ def agent(
 
         # Attach metadata for the Seren CLI and publishing tools
         wrapper._seren_agent = {
-            "name": name,
+            "name": name.strip(),
             "description": description,
             "price": price,
             "compute_backend": compute_backend,

@@ -28,6 +28,7 @@ def run_local(
 
     Example:
         from my_agent import run
+        from seren_agent.testing import run_local
 
         result = run_local(
             run,
@@ -139,3 +140,7 @@ class AgentTestCase:
             assert output["error"] == error_code, (
                 f"Expected error '{error_code}', got '{output['error']}'"
             )
+
+
+# Alias for convenience - used in example agents
+test_agent = run_local

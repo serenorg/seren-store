@@ -256,8 +256,9 @@ Return as JSON:
   },
 );
 
-// Local testing
-if (require.main === module) {
+// Local testing (run with: npx ts-node agent.ts)
+const isMainModule = typeof require !== "undefined" && require.main === module;
+if (isMainModule) {
   const sampleResume = `
 John Smith
 Senior Software Engineer
