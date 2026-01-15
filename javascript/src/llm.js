@@ -7,6 +7,10 @@
  * @module seren-agent/llm
  */
 
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+
 /**
  * Get an OpenAI client instance.
  *

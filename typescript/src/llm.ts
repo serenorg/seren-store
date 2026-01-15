@@ -5,6 +5,10 @@
  * variables injected by the compute backend.
  */
 
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+
 /**
  * Get an OpenAI client using the injected OPENAI_API_KEY.
  *
@@ -24,8 +28,12 @@
  * ```
  */
 export function getOpenAIClient(apiKey?: string) {
-  // Dynamic import to avoid bundling if not used
-  const OpenAI = require("openai").default;
+  let OpenAI;
+  try {
+    OpenAI = require("openai").default;
+  } catch {
+    throw new Error("openai package not installed. Run: npm install openai");
+  }
 
   const key = apiKey ?? process.env.OPENAI_API_KEY;
   if (!key) {
@@ -58,7 +66,14 @@ export function getOpenAIClient(apiKey?: string) {
  * ```
  */
 export function getAnthropicClient(apiKey?: string) {
-  const Anthropic = require("@anthropic-ai/sdk").default;
+  let Anthropic;
+  try {
+    Anthropic = require("@anthropic-ai/sdk").default;
+  } catch {
+    throw new Error(
+      "@anthropic-ai/sdk package not installed. Run: npm install @anthropic-ai/sdk",
+    );
+  }
 
   const key = apiKey ?? process.env.ANTHROPIC_API_KEY;
   if (!key) {
@@ -88,7 +103,14 @@ export function getAnthropicClient(apiKey?: string) {
  * ```
  */
 export function getGoogleClient(apiKey?: string) {
-  const { GoogleGenerativeAI } = require("@google/generative-ai");
+  let GoogleGenerativeAI;
+  try {
+    GoogleGenerativeAI = require("@google/generative-ai").GoogleGenerativeAI;
+  } catch {
+    throw new Error(
+      "@google/generative-ai package not installed. Run: npm install @google/generative-ai",
+    );
+  }
 
   const key = apiKey ?? process.env.GOOGLE_API_KEY;
   if (!key) {
