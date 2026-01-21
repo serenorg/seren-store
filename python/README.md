@@ -57,7 +57,35 @@ All agents must:
 
 ## LLM Helpers
 
-The SDK provides helpers for common LLM providers:
+### Seren Publisher routing (recommended)
+
+These clients route requests through Seren Publishers (e.g. `seren-models`) and
+only require `SEREN_API_KEY` (no provider SDK packages needed):
+
+```python
+from seren_agent.llm import get_seren_claude_client, get_seren_openai_client
+
+# Claude via seren-models
+claude = get_seren_claude_client()
+response = claude.chat.completions.create(
+    messages=[{"role": "user", "content": "Hello!"}],
+    max_tokens=100,
+)
+
+# OpenAI via seren-models
+openai = get_seren_openai_client()
+response = openai.chat.completions.create(
+    messages=[{"role": "user", "content": "Hello!"}],
+    max_tokens=100,
+)
+```
+
+You can also set a custom base URL for non-production environments with
+`SEREN_API_URL`.
+
+### Direct provider clients (optional)
+
+The SDK also provides helpers for common LLM provider SDKs:
 
 ```python
 from seren_agent.llm import (

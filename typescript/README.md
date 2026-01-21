@@ -16,7 +16,7 @@ yarn add seren-agent
 
 ```typescript
 import { agent } from "seren-agent";
-import { getOpenAIClient } from "seren-agent/llm";
+import { getSerenOpenAIClient } from "seren-agent/llm";
 
 // Define your agent with pricing
 export const run = agent(
@@ -26,19 +26,19 @@ export const run = agent(
     price: "0.05", // $0.05 per invocation
   },
   async (input: { query: string }) => {
-    const openai = getOpenAIClient();
+    const openai = getSerenOpenAIClient();
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4",
       messages: [
         { role: "system", content: "You are a research assistant." },
         { role: "user", content: `Research: ${input.query}` },
       ],
+      max_tokens: 500,
     });
 
     return {
       summary: response.choices[0]?.message?.content ?? "",
-      model: "gpt-4",
+      model: "openai/gpt-4o",
     };
   },
 );
@@ -75,7 +75,31 @@ export const run = agent(
 
 ## LLM Clients
 
-The SDK provides helpers that read API keys from environment variables (injected by the compute backend):
+### Seren Publisher routing (recommended)
+
+These clients route requests through Seren Publishers (e.g. `seren-models`) and
+only require `SEREN_API_KEY` (no provider SDK packages needed):
+
+```typescript
+import { getSerenClaudeClient, getSerenOpenAIClient } from "seren-agent/llm";
+
+const claude = getSerenClaudeClient();
+const openai = getSerenOpenAIClient();
+
+const response = await claude.chat.completions.create({
+  messages: [{ role: "user", content: "Hello!" }],
+  max_tokens: 100,
+});
+console.log(response.choices[0]?.message?.content ?? "");
+```
+
+You can also set a custom base URL for non-production environments with
+`SEREN_API_URL`.
+
+### Direct provider clients (optional)
+
+The SDK provides helpers that read provider API keys from environment variables
+(injected by the compute backend):
 
 ```typescript
 import { getOpenAIClient, getAnthropicClient, getGoogleClient } from "seren-agent/llm";
@@ -93,7 +117,7 @@ const google = getGoogleClient();
 const model = google.getGenerativeModel({ model: "gemini-pro" });
 ```
 
-**Note:** Install the LLM SDKs you need as peer dependencies:
+**Note:** Install the LLM SDKs you need as peer dependencies (only required for direct provider clients):
 ```bash
 npm install openai              # For OpenAI
 npm install @anthropic-ai/sdk   # For Anthropic
