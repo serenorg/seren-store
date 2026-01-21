@@ -29,7 +29,7 @@ export type JsonValue =
  * ```
  */
 export interface AgentInput {
-  [key: string]: JsonValue;
+  [key: string]: JsonValue | undefined;
 }
 
 /**
@@ -48,7 +48,7 @@ export interface AgentInput {
  * ```
  */
 export interface AgentOutput {
-  [key: string]: JsonValue;
+  [key: string]: JsonValue | undefined;
 }
 
 /**

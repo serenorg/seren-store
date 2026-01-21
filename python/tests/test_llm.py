@@ -86,8 +86,8 @@ class TestSerenOpenAIClient:
 class TestChatCompletions:
     """Tests for the chat completions interface."""
 
-    @patch("seren_agent.llm.httpx.Client.post")
-    def test_chat_completions_create(self, mock_post):
+    @patch("seren_agent.llm.httpx.Client.request")
+    def test_chat_completions_create(self, mock_request):
         """Should make correct API call for chat completions."""
         mock_response = MagicMock()
         mock_response.status_code = 200
@@ -95,7 +95,7 @@ class TestChatCompletions:
             "choices": [{"message": {"role": "assistant", "content": "Hello!"}}],
             "usage": {"prompt_tokens": 10, "completion_tokens": 5, "total_tokens": 15},
         }
-        mock_post.return_value = mock_response
+        mock_request.return_value = mock_response
 
         with patch.dict(os.environ, {"SEREN_API_KEY": "test-key"}):
             client = get_seren_claude_client()
@@ -105,8 +105,8 @@ class TestChatCompletions:
             )
 
         assert response["choices"][0]["message"]["content"] == "Hello!"
-        mock_post.assert_called_once()
-        call_args = mock_post.call_args
+        mock_request.assert_called_once()
+        call_args = mock_request.call_args
         # Verify the request body includes model and messages
         body = call_args.kwargs.get("json") or json.loads(
             call_args.kwargs.get("data", "{}")
@@ -114,15 +114,15 @@ class TestChatCompletions:
         assert "model" in body
         assert "messages" in body
 
-    @patch("seren_agent.llm.httpx.Client.post")
-    def test_chat_completions_with_custom_model(self, mock_post):
+    @patch("seren_agent.llm.httpx.Client.request")
+    def test_chat_completions_with_custom_model(self, mock_request):
         """Should allow overriding model per request."""
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
             "choices": [{"message": {"role": "assistant", "content": "Hi!"}}],
         }
-        mock_post.return_value = mock_response
+        mock_request.return_value = mock_response
 
         with patch.dict(os.environ, {"SEREN_API_KEY": "test-key"}):
             client = get_seren_claude_client()
@@ -131,14 +131,14 @@ class TestChatCompletions:
                 messages=[{"role": "user", "content": "Hi"}],
             )
 
-        call_args = mock_post.call_args
+        call_args = mock_request.call_args
         body = call_args.kwargs.get("json") or json.loads(
             call_args.kwargs.get("data", "{}")
         )
         assert body["model"] == "anthropic/claude-opus-4-20250514"
 
-    @patch("seren_agent.llm.httpx.Client.post")
-    def test_handles_api_error(self, mock_post):
+    @patch("seren_agent.llm.httpx.Client.request")
+    def test_handles_api_error(self, mock_request):
         """Should handle API errors gracefully."""
         mock_response = MagicMock()
         mock_response.status_code = 402
@@ -146,7 +146,7 @@ class TestChatCompletions:
             "error": {"message": "Insufficient balance", "code": 402}
         }
         mock_response.raise_for_status.side_effect = Exception("402 Payment Required")
-        mock_post.return_value = mock_response
+        mock_request.return_value = mock_response
 
         with patch.dict(os.environ, {"SEREN_API_KEY": "test-key"}):
             client = get_seren_claude_client()
@@ -159,15 +159,15 @@ class TestChatCompletions:
 class TestMessagesInterface:
     """Tests for the messages interface (Anthropic-style)."""
 
-    @patch("seren_agent.llm.httpx.Client.post")
-    def test_messages_create(self, mock_post):
+    @patch("seren_agent.llm.httpx.Client.request")
+    def test_messages_create(self, mock_request):
         """Should support Anthropic-style messages.create() interface."""
         mock_response = MagicMock()
         mock_response.status_code = 200
         mock_response.json.return_value = {
             "choices": [{"message": {"role": "assistant", "content": "Hello!"}}],
         }
-        mock_post.return_value = mock_response
+        mock_request.return_value = mock_response
 
         with patch.dict(os.environ, {"SEREN_API_KEY": "test-key"}):
             client = get_seren_claude_client()
