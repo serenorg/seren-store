@@ -10,6 +10,10 @@ Price: $0.03 per invocation
 from seren_agent import agent
 from seren_agent.llm import get_openai_client
 
+# Alternative: Use Seren Publisher routing (no openai package needed, uses SEREN_API_KEY)
+# from seren_agent.llm import get_seren_openai_client
+# client = get_seren_openai_client()  # Routes through seren-models publisher
+
 
 @agent(
     name="Code Reviewer",
@@ -137,7 +141,7 @@ if __name__ == "__main__":
     # Local testing
     from seren_agent.testing import test_agent
 
-    sample_code = '''
+    sample_code = """
 def calculate_total(items):
     total = 0
     for item in items:
@@ -147,7 +151,7 @@ def calculate_total(items):
 def get_user_input():
     query = input("Enter SQL query: ")
     return f"SELECT * FROM users WHERE name = '{query}'"
-'''
+"""
 
     result = test_agent(
         run,

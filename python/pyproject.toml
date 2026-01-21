@@ -26,8 +26,8 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
-# No required dependencies - LLM packages are optional
-dependencies = []
+# httpx is required for Seren Publisher routing; LLM packages are optional
+dependencies = ["httpx>=0.25.0"]
 
 [project.optional-dependencies]
 openai = ["openai>=1.0.0"]

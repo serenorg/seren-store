@@ -10,6 +10,10 @@ Price: $0.05 per invocation (covers LLM API costs + compute)
 from seren_agent import agent
 from seren_agent.llm import get_openai_client
 
+# Alternative: Use Seren Publisher routing (no openai package needed, uses SEREN_API_KEY)
+# from seren_agent.llm import get_seren_openai_client
+# client = get_seren_openai_client()  # Routes through seren-models publisher
+
 
 @agent(
     name="Web Researcher",
@@ -103,7 +107,10 @@ def run(input: dict) -> dict:
                 "Each source should have: title, url (realistic but may be example), "
                 "and relevance (brief description). Return only valid JSON.",
             },
-            {"role": "user", "content": f"Topic: {query}\n\nGenerate {max_sources} sources."},
+            {
+                "role": "user",
+                "content": f"Topic: {query}\n\nGenerate {max_sources} sources.",
+            },
         ],
         temperature=0.5,
     )
@@ -153,7 +160,10 @@ if __name__ == "__main__":
 
     result = test_agent(
         run,
-        {"query": "What are the latest developments in quantum computing?", "depth": "quick"},
+        {
+            "query": "What are the latest developments in quantum computing?",
+            "depth": "quick",
+        },
         env={"OPENAI_API_KEY": "your-key-here"},
     )
     print(result)

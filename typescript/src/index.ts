@@ -30,7 +30,20 @@ export type {
 } from "./types";
 
 // Re-export LLM helpers for convenience
-export { getOpenAIClient, getAnthropicClient, getGoogleClient } from "./llm";
+export {
+  getOpenAIClient,
+  getAnthropicClient,
+  getGoogleClient,
+  getSerenClaudeClient,
+  getSerenOpenAIClient,
+  SerenLLMClient,
+} from "./llm";
+export type {
+  ChatMessage,
+  ChatCompletionOptions,
+  ChatCompletionResponse,
+  SerenLLMClientOptions,
+} from "./llm";
 
 // Re-export tool utilities
 export { ToolRegistry, defineTool } from "./tools";

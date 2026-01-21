@@ -10,6 +10,10 @@
 import { agent } from "seren-agent";
 import { getOpenAIClient } from "seren-agent/llm";
 
+// Alternative: Use Seren Publisher routing (no openai package needed, uses SEREN_API_KEY)
+// import { getSerenOpenAIClient } from "seren-agent/llm";
+// const client = getSerenOpenAIClient();  // Routes through seren-models publisher
+
 interface ExtractedField {
   name: string;
   value: string | number | boolean | null;
