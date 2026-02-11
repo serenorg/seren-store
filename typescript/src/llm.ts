@@ -193,7 +193,7 @@ export class SerenLLMClient {
     path: string,
     body?: Record<string, unknown>,
   ): Promise<ChatCompletionResponse> {
-    const url = `${this.baseUrl}/agent/api/${this.publisher}${path}`;
+    const url = `${this.baseUrl}/publishers/${this.publisher}${path}`;
 
     const response = await fetch(url, {
       method,

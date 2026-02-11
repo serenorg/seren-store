@@ -191,7 +191,7 @@ class SerenLLMClient:
         Raises:
             Exception: On HTTP errors
         """
-        url = f"/agent/api/{self.publisher}{path}"
+        url = f"/publishers/{self.publisher}{path}"
         response = self._http_client.request(method, url, json=json)
         response.raise_for_status()
         return response.json()
