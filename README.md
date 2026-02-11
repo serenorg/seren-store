@@ -108,9 +108,10 @@ seren agent template publish \
 
 ## Related Repositories
 
-| Repository | Purpose |
-|------------|---------|
-| [serenorg/seren](https://github.com/serenorg/seren) | MCP server and CLI tools |
+| Repository                                                           | Purpose                  |
+|----------------------------------------------------------------------|--------------------------|
+| [serenorg/seren](https://github.com/serenorg/seren)                 | MCP server and CLI tools |
+| [serenorg/seren-desktop](https://github.com/serenorg/seren-desktop) | Seren Desktop IDE        |
 
 ## Development
 
