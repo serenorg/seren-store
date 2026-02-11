@@ -1,3 +1,5 @@
+# ABOUTME: TypedDict definitions for agent input/output contracts.
+# ABOUTME: Provides AgentInput, AgentOutput, ErrorOutput, SuccessOutput base types.
 """Type definitions for Seren agents.
 
 These types provide structure and documentation for agent inputs/outputs.

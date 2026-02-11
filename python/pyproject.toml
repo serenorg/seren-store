@@ -49,8 +49,8 @@ dev = [
 [project.urls]
 Homepage = "https://seren.ai"
 Documentation = "https://docs.seren.ai/agents"
-Repository = "https://github.com/serenai/seren-agents"
-Issues = "https://github.com/serenai/seren-agents/issues"
+Repository = "https://github.com/serenorg/seren-store"
+Issues = "https://github.com/serenorg/seren-store/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["seren_agent"]

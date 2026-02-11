@@ -1,27 +1,43 @@
+# Internal documentation and design specs
+docs/
+
+# Claude Code configuration
+CLAUDE.md
+.claude/
+
 # macOS
 .DS_Store
 
-# Local agent/CLI artifacts
-.agent-shell/
-
-# Local notes
-project-todo.org
+# Environment and credentials
+.env
+.env.local
+.env.*.local
+*.local.json
 
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-.venv/
+*.whl
 
-# Node
+# Node / TypeScript
 node_modules/
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
+typescript/dist/
+*.tsbuildinfo
 
-# Build artifacts
-dist/
-build/
-*.egg-info/
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db

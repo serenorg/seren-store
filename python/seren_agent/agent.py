@@ -1,3 +1,5 @@
+# ABOUTME: Decorator that marks a function as a Seren agent template.
+# ABOUTME: Validates config (name, price) and attaches metadata for CLI publishing.
 """Agent decorator for Seren templates.
 
 The @agent decorator marks a function as a Seren agent template. Templates

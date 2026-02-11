@@ -1,3 +1,5 @@
+# ABOUTME: Local testing utilities for Seren agents.
+# ABOUTME: Provides run_local(), validate_output(), mock helpers, and AgentTestCase.
 """Testing utilities for Seren agents.
 
 Helpers for testing your agent locally before publishing.

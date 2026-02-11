@@ -1,3 +1,5 @@
+# ABOUTME: Tool registry and schema helpers for OpenAI-style function calling.
+# ABOUTME: Provides ToolRegistry for registering, executing, and schema-exporting tools.
 """Tool calling helpers for Seren agents.
 
 Utilities for implementing tool-using agents with function calling support.

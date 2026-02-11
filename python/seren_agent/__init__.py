@@ -1,3 +1,5 @@
+# ABOUTME: Package entry point for the seren-agent SDK.
+# ABOUTME: Exports the @agent decorator and base types for building Seren agent templates.
 """Seren Agent SDK - Build monetizable AI agents for the Seren Store.
 
 This SDK provides a simple interface for creating agent templates that can

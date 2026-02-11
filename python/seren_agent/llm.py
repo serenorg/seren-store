@@ -1,3 +1,5 @@
+# ABOUTME: Factory functions for LLM clients (OpenAI, Anthropic, Google).
+# ABOUTME: Reads API keys from env vars injected by the compute backend.
 """LLM client helpers for Seren agents.
 
 These helpers provide a consistent way to access LLM APIs using environment
