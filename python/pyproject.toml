@@ -10,7 +10,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.9"
 authors = [
-    { name = "Seren", email = "support@seren.ai" }
+    { name = "Seren", email = "hello@serendb.com" }
 ]
 keywords = ["ai", "agents", "llm", "monetization", "x402"]
 classifiers = [
@@ -47,8 +47,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://seren.ai"
-Documentation = "https://docs.seren.ai/agents"
+Homepage = "https://serendb.com"
+Documentation = "https://docs.serendb.com/agents"
 Repository = "https://github.com/serenorg/seren-store"
 Issues = "https://github.com/serenorg/seren-store/issues"
 

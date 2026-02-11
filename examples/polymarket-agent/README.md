@@ -119,7 +119,7 @@ call_publisher(
     path="/jobs",
     body={
         "schedule": "*/10 * * * *",
-        "target": "https://gateway.seren.ai/v1/templates/polymarket-trader/invoke",
+        "target": "https://gateway.serendb.com/v1/templates/polymarket-trader/invoke",
         "body": {"action": "scan", "bankroll": 50.0},
     },
 )

@@ -49,7 +49,7 @@
     "url": "https://github.com/serenorg/seren-store.git",
     "directory": "typescript"
   },
-  "homepage": "https://seren.ai/docs/agents",
+  "homepage": "https://serendb.com/docs/agents",
   "bugs": {
     "url": "https://github.com/serenorg/seren-store/issues"
   },

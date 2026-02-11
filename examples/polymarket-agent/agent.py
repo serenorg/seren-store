@@ -52,7 +52,7 @@ def seren_call(publisher, **kwargs):
         if val:
             headers[key] = val
 
-    base = "https://gateway.seren.ai/v1/publishers"
+    base = "https://gateway.serendb.com/v1/publishers"
     url = f"{base}/{publisher}"
 
     if "query" in kwargs:
