@@ -110,7 +110,6 @@ seren agent template publish \
 
 | Repository | Purpose |
 |------------|---------|
-| [serenorg/serencore](https://github.com/serenorg/serencore) | Backend API (Rust) - payments, invocation, storage |
 | [serenorg/seren](https://github.com/serenorg/seren) | MCP server and CLI tools |
 
 ## Development
