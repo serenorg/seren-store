@@ -52,8 +52,8 @@ def seren_call(publisher, **kwargs):
         if val:
             headers[key] = val
 
-    base = "https://gateway.serendb.com/v1/publishers"
-    url = f"{base}/{publisher}"
+    base = os.environ.get("SEREN_API_URL", "https://api.serendb.com")
+    url = f"{base}/publishers/{publisher}"
 
     if "query" in kwargs:
         url += "/query"
